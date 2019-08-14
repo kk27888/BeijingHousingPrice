@@ -1,0 +1,286 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+"""
+
+import pandas as pd
+import re
+import math
+import numpy as np
+
+data = pd.read_excel("data2.xlsx")
+
+drop = []
+for line in range(len(data)):
+    if(math.isnan(float(data.iloc[line,11]))):
+        drop.append(line)
+    else:
+        re.sub("精装","Luxury decoration","".join(data.iloc[line,16]))
+        re.sub("简装","Simple decoration","".join(data.iloc[line,16]))
+        re.sub("毛坯","No decoration","".join(data.iloc[line,16]))
+        re.sub("其他","Others","".join(data.iloc[line,16]))
+        re.sub("朝阳","Chaoyang","".join(data.iloc[line,21]))
+        re.sub("昌平","Changping","".join(data.iloc[line,21]))
+        re.sub("东城","Dongcheng","".join(data.iloc[line,21]))
+        re.sub("顺义","Shunyi","".join(data.iloc[line,21]))
+        re.sub("西城","Xicheng","".join(data.iloc[line,21]))
+        re.sub("丰台","Fengtai","".join(data.iloc[line,21]))
+        re.sub("海淀","Haidian","".join(data.iloc[line,21]))
+        re.sub("亦庄开发区","Yizhuang","".join(data.iloc[line,21]))
+        re.sub("石景山","Shijingshan","".join(data.iloc[line,21]))
+        re.sub("门头沟","Mentougou","".join(data.iloc[line,21]))
+        re.sub("通州","Tongzhou","".join(data.iloc[line,21]))
+        re.sub("大兴","Daxing","".join(data.iloc[line,21]))
+
+for item in drop:
+    data.drop(item,inplace = True)
+
+
+HP_Chaoyang = []
+HP_Changping = []
+HP_Dongcheng=[]
+HP_Shunyi=[]
+HP_Xicheng=[]
+HP_Fengtai=[]
+HP_Haidian=[]
+HP_Yizhuang=[]
+HP_Shijingshan=[]
+HP_Mentougou=[]
+HP_Tongzhou=[]
+HP_Daxing=[]
+
+##########1. the average price of each year in beijing
+data['year'] = data['TradeTime'].dt.year                
+Price_2011=data.loc[data['year'] == 2011]      
+Sum_price_2011=sum(Price_2011['Price'])        
+Avg_price_2011=Sum_price_2011/len(Price_2011)   
+
+Price_2012=data.loc[data['year'] == 2012]      
+Sum_price_2012=sum(Price_2012['Price'])        
+Avg_price_2012=Sum_price_2012/len(Price_2012)   
+
+Price_2013=data.loc[data['year'] == 2013]      
+Sum_price_2013=sum(Price_2013['Price'])        
+Avg_price_2013=Sum_price_2013/len(Price_2013)   
+
+Price_2014=data.loc[data['year'] == 2014]      
+Sum_price_2014=sum(Price_2014['Price'])        
+Avg_price_2014=Sum_price_2014/len(Price_2014)   
+
+Price_2015=data.loc[data['year'] == 2015]      
+Sum_price_2015=sum(Price_2015['Price'])        
+Avg_price_2015=Sum_price_2015/len(Price_2015)   
+
+Price_2016=data.loc[data['year'] == 2016]      
+Sum_price_2016=sum(Price_2016['Price'])        
+Avg_price_2016=Sum_price_2016/len(Price_2016)   
+
+Price_2017=data.loc[data['year'] == 2017]      
+Sum_price_2017=sum(Price_2017['Price'])        
+Avg_price_2017=Sum_price_2017/len(Price_2017)   
+
+import matplotlib.pyplot as plt
+
+year = [2011, 2012, 2013, 2014, 2015, 2016,2017]
+Ave_price = [Avg_price_2011, Avg_price_2012, Avg_price_2013, Avg_price_2014, Avg_price_2015, Avg_price_2016,Avg_price_2017]
+plt.plot(year, Ave_price, color='orange')
+plt.xlabel('Year')
+plt.ylabel('Housing Price in Beijing')
+plt.title('Housing price in Beijing from 2011-2017')
+plt.show()
+
+#############2. the averahe price of each district
+Chaoyang=data[data['District'].str.contains("Chaoyang")]
+Changping=data[data['District'].str.contains("Changping")]
+Dongcheng=data[data['District'].str.contains("Dongcheng")]
+Shunyi=data[data['District'].str.contains("Shunyi")]
+Xicheng=data[data['District'].str.contains("Xicheng")]
+Fengtai=data[data['District'].str.contains("Fengtai")]
+Haidian=data[data['District'].str.contains("Haidian")]
+Yizhuang=data[data['District'].str.contains("Yizhuang")]
+Shijingshan=data[data['District'].str.contains("Shijingshan")]
+Mentougou=data[data['District'].str.contains("Mentougou")]
+Tongzhou=data[data['District'].str.contains("Tongzhou")]
+Daxing=data[data['District'].str.contains("Daxing")]
+
+
+Avg_Chaoyang = float(sum(Chaoyang["Price"]) / len(Chaoyang["Price"]))
+Avg_Changping = float(sum(Changping["Price"]) / len(Changping["Price"]))
+Avg_Dongcheng = float(sum(Dongcheng["Price"]) / len(Dongcheng["Price"]))
+Avg_Shunyi = float(sum(Shunyi["Price"]) / len(Shunyi["Price"]))
+Avg_Xicheng = float(sum(Xicheng["Price"]) / len(Xicheng["Price"]))
+Avg_Fengtai = float(sum(Fengtai["Price"]) / len(Fengtai["Price"]))
+Avg_Haidian = float(sum(Haidian["Price"]) / len(Haidian["Price"]))
+Avg_Yizhuang = float(sum(Yizhuang["Price"]) / len(Yizhuang["Price"]))
+Avg_Shijingshan = float(sum(Shijingshan["Price"]) / len(Shijingshan["Price"]))
+Avg_Mentougou = float(sum(Mentougou["Price"]) / len(Mentougou["Price"]))
+Avg_Tongzhou = float(sum(Tongzhou["Price"]) / len(Tongzhou["Price"]))
+Avg_Daxing = float(sum(Daxing["Price"]) / len(Daxing["Price"]))
+
+import matplotlib.pyplot as plt; plt.rcdefaults()
+import numpy as np
+import matplotlib.pyplot as plt
+objects = ("Chaoyang","Changping","Dongcheng","Shunyi","Xicheng","Fengtai","Haidian","Yizhuang","Shijingshan","Mentougou","Tongzhou","Daxing")
+y_pos = np.arange(len(objects))
+performance = [Avg_Chaoyang,Avg_Changping,Avg_Dongcheng,Avg_Shunyi,Avg_Xicheng,Avg_Fengtai,Avg_Haidian,Avg_Yizhuang,Avg_Shijingshan,Avg_Mentougou,Avg_Tongzhou,Avg_Daxing]
+plt.bar(y_pos, performance, align='center', alpha=0.5)
+plt.xticks(y_pos, objects, rotation='vertical')
+plt.ylabel('Housing Price')
+plt.title('Housing Prices Distribution in Different Districts in Beijing')
+plt.show()
+
+
+
+
+
+
+#########Scatter plot
+#price and constraction time
+
+new_data=data.loc[data['Construction time']>1]     
+
+ax1 = new_data.plot(kind='scatter', x='Construction time', y='Price', color='r', s = 0.05)    
+print(ax1) 
+x=new_data["Construction time"]
+y=new_data["Price"]
+z = np.polyfit(x, y, 1)
+p = np.poly1d(z)
+plt.plot(x,p(x),"r--")
+
+plt.show()
+
+plt.show()
+type(new_data.iloc[109432,16])
+type(new_data.iloc[1,7])
+
+
+
+############sentiment analysis
+import nltk
+from nltk import *
+nltk.download()
+filename = 'housing news.txt'
+
+# read in data from the baby.txt file
+with open(filename) as f:
+    text = f.readlines()
+#sentence tokenize
+sentence=[]
+for i in range(len(text)):
+    sentence.append(sent_tokenize(text[i]))
+all_sentence=[]
+for i in range(len(sentence)):
+    for a in range(len(sentence[i])):
+        all_review=sentence[i][a]
+        all_sentence.append(all_review)
+
+from nltk.corpus import wordnet as wn
+from nltk.corpus import sentiwordnet as swn
+from nltk.corpus import sentence_polarity
+import random
+#word tokenize in each row of the dataframe
+from nltk.tokenize import sent_tokenize, word_tokenize
+token_text=[]
+for i in range(len(sentence)):
+    for a in range(len(sentence[i])):
+        text_tokens=nltk.word_tokenize(sentence[i][a])
+        token_text.append(text_tokens)
+#add pos_tag on each tokenize
+text_pos=nltk.pos_tag(str(token_text)) 
+sentences = sentence_polarity.sents()
+sentence_length=len(sentences)
+type(sentences)
+sentence_polarity.categories()
+documents = [(sent, cat) for cat in sentence_polarity.categories() for sent in sentence_polarity.sents(categories=cat)]
+random.shuffle(documents)
+all_words_list = [word for (sent,cat) in documents for word in sent]
+all_words = nltk.FreqDist(all_words_list)
+word_items = all_words.most_common(2000)
+word_features = [word for (word, freq) in word_items]
+
+def document_features(document, word_features):
+    document_words = set(document)
+    features = {}
+    for word in word_features:
+        features['contains({})'.format(word)] = (word in document_words)
+    return features
+
+#Define the feature sets for the documents. 
+featuresets = [(document_features(d,word_features), c) for (d,c) in documents]
+train_set, test_set = featuresets[1000:], featuresets[:1000]
+classifier = nltk.NaiveBayesClassifier.train(train_set)
+print (nltk.classify.accuracy(classifier, test_set))#accuracy rate is 0.751
+
+#2 Sentiment Classification - Subjectivity Count features
+SLpath ='subjclueslen1-HLTEMNLP05.tff'
+#define function readSubjectivity
+def readSubjectivity(path):
+    flexicon = open(path, 'r')
+    # initialize an empty dictionary
+    sldict = { }
+    for line in flexicon:
+        fields = line.split()   # default is to split on whitespace
+        # split each field on the '=' and keep the second part as the value
+        strength = fields[0].split("=")[1]
+        word = fields[2].split("=")[1]
+        posTag = fields[3].split("=")[1]
+        stemmed = fields[4].split("=")[1]
+        polarity = fields[5].split("=")[1]
+        if (stemmed == 'y'):
+            isStemmed = True
+        else:
+            isStemmed = False
+        # put a dictionary entry with the word as the keyword
+        #     and a list of the other values
+        sldict[word] = [strength, posTag, isStemmed, polarity]
+    return sldict
+SL = readSubjectivity(SLpath)
+
+def SL_features(document, word_features, SL):
+    document_words = set(document)
+    features = {}
+    for word in word_features:
+        features['contains(%s)' % word] = (word in document_words)
+    weakPos = 0
+    strongPos = 0
+    weakNeg = 0
+    strongNeg = 0
+    for word in document_words:
+        if word in SL:
+            strength, posTag, isStemmed, polarity = SL[word]
+            if strength == 'weaksubj' and polarity == 'positive':
+                weakPos += 1
+            if strength == 'strongsubj' and polarity == 'positive':
+                strongPos += 1
+            if strength == 'weaksubj' and polarity == 'negative':
+                weakNeg += 1
+            if strength == 'strongsubj' and polarity == 'negative':
+                strongNeg += 1
+            features['positivecount'] = weakPos + (2 * strongPos)
+            features['negativecount'] = weakNeg + (2 * strongNeg)
+    return features
+SL_featuresets = [(SL_features(d, word_features, SL), c) for (d,c) in documents]
+# features in document 0
+trainset_SL, testset_SL = SL_featuresets[1000:], SL_featuresets[:1000]
+classifier_SL = nltk.NaiveBayesClassifier.train(trainset_SL)
+print (nltk.classify.accuracy(classifier_SL, testset_SL)) #0.753
+
+
+pos_sent=[]
+neg_sent=[]
+
+for i in range(len(all_sentence)):
+    if str(classifier_SL.classify(SL_features(sentence[i], word_features, SL)))=='pos':
+        pos_sent.append(all_sentence[i])
+    if str(classifier_SL.classify(SL_features(sentence[i], word_features, SL)))=='neg':
+        neg_sent.append(all_sentence[i])
+
+pos_number=len(pos_sent)
+neg_number=len(neg_sent)
+import matplotlib.pyplot as plt
+slices_hours = [pos_number, neg_number]
+activities = ['Positive', 'Negative=']
+colors = ['r', 'g']
+plt.pie(slices_hours, labels=activities, colors=colors, startangle=90, autopct='%.1f%%')
+plt.show()
